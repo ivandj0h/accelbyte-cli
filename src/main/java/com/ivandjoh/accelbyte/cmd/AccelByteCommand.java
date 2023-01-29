@@ -29,11 +29,9 @@ public class AccelByteCommand implements Runnable {
     @Override
     public void run() {
         if (user == null || user.length() == 0) {
-//            System.out.println("Hello, World!");
-            FileAssert.printDirectoryTree(new File("app"));
+            System.out.println("Hello, World!");
         } else {
-//            System.out.println("Hello " + user);
-            FileAssert.printDirectoryTree(new File("target"));
+            System.out.println("Hello " + user);
         }
     }
 }
