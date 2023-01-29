@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class TreeNode<T> implements Iterable<TreeNode<T>> {
 
@@ -77,7 +78,7 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
             throw new IllegalArgumentException("folder is not a Directory");
         }
         TreeNode<File> DirRoot = new TreeNode<File>(folder);
-        for (File file : folder.listFiles()) {
+        for (File file : Objects.requireNonNull(folder.listFiles())) {
             if (file.isDirectory()) {
                 appendDirTree(file, DirRoot);
             } else {
@@ -90,7 +91,7 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
     public static void appendDirTree(File folder, TreeNode<File> DirRoot)
     {
         DirRoot.addChild(folder);
-        for (File file : folder.listFiles()) {
+        for (File file : Objects.requireNonNull(folder.listFiles())) {
             if (file.isDirectory()) {
                 appendDirTree(file,
                         DirRoot.children.get(DirRoot.children.size() - 1));
