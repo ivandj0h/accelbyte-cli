@@ -1,14 +1,14 @@
 package com.ivandjoh.accelbyte;
 
-import com.ivandjoh.accelbyte.cmd.AccelByteCommand;
+import com.ivandjoh.accelbyte.cmd.AccelByteCMD;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import picocli.CommandLine;
 
 @SpringBootApplication
 public class App {
 
 	public static void main(String[] args) {
-		new CommandLine(new AccelByteCommand()).execute(args);
+//		new CommandLine(new AccelByteCommand()).execute(args);
+		AccelByteCMD.executeAccelByteCommand();
 	}
 
 }

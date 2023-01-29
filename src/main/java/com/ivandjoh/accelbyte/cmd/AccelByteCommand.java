@@ -1,9 +1,6 @@
 package com.ivandjoh.accelbyte.cmd;
 
-import com.ivandjoh.accelbyte.dir.FileAssert;
 import picocli.CommandLine;
-
-import java.io.File;
 
 @CommandLine.Command(
         name = "",

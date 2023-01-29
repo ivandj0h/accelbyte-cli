@@ -1,0 +1,5 @@
+dir
+├── FileAssert.class
+├── TreeNode.class
+├── TreeNodeIter$ProcessStages.class
+└── TreeNodeIter.class
