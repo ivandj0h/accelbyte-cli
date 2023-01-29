@@ -2,19 +2,22 @@ package com.ivandjoh.accelbyte.cmd;
 
 import picocli.CommandLine;
 
-import java.util.Optional;
-
 @CommandLine.Command(
         name = "",
         mixinStandardHelpOptions = true,
-        version = "1.0.0"
+        version = "1.0.0",
+        requiredOptionMarker = '*',
+        description = "%nThis is AccelByte-cli tools",
+        optionListHeading = "%nYou can choose several Options are :%n"
 )
 public class AccelByteCommand implements Runnable {
 
-    @CommandLine.Option(names = {"-h", "--help"}, usageHelp = true)
-    boolean help;
 
-    @CommandLine.Option(names = {"-u", "--user"})
+    @CommandLine.Option(
+            names = {"-u", "--user"},
+            description = "Please Provide Username",
+            paramLabel = "username"
+    )
     String user;
 
 
