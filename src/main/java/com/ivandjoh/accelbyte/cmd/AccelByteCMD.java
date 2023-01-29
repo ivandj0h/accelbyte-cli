@@ -1,5 +1,6 @@
 package com.ivandjoh.accelbyte.cmd;
 
+import com.ivandjoh.accelbyte.dir.TreeNode;
 import org.apache.commons.cli.*;
 import org.apache.commons.cli.ParseException;
 
@@ -19,7 +20,8 @@ public class AccelByteCMD {
             } else if (line.hasOption("version")) {
                 System.out.println("1.0.0");
             } else {
-                System.out.println("Hello, AccelByte!");
+//                System.out.println("Hello, AccelByte!");
+                TreeNode.main(new String[]{});
             }
         } catch (ParseException e) {
             e.printStackTrace();

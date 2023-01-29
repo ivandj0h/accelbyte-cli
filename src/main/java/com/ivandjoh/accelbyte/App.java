@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class App {
 
 	public static void main(String[] args) {
-//		new CommandLine(new AccelByteCommand()).execute(args);
 		AccelByteCMD.executeAccelByteCommand();
 	}
 
