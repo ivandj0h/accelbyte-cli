@@ -2,7 +2,11 @@ package com.ivandjoh.accelbyte.cmd;
 
 import picocli.CommandLine;
 
-@CommandLine.Command(name = "accelbyte", mixinStandardHelpOptions = true, version = "1.0.0")
+@CommandLine.Command(
+        name = "AccelByte-cli",
+        mixinStandardHelpOptions = true,
+        version = "1.0.0"
+)
 public class AccelByteCommand implements Runnable {
 
     @Override
