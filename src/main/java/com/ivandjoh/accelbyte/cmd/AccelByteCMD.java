@@ -20,8 +20,7 @@ public class AccelByteCMD {
             } else if (line.hasOption("version")) {
                 System.out.println("1.0.0");
             } else {
-//                System.out.println("Hello, AccelByte!");
-                TreeNode.main(new String[]{});
+                TreeNode.main();
             }
         } catch (ParseException e) {
             e.printStackTrace();

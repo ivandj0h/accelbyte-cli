@@ -1,4 +1,3 @@
-dir
-├── TreeNode.class
-├── TreeNodeIter$ProcessStages.class
-└── TreeNodeIter.class
+Directory_A
+├── File_A_001.txt
+└── File_A_002.txt
