@@ -156,8 +156,8 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
         }
     }
 
-    public static void main() {
-        File file = new File("./src/main/resources/Directory_A");
+    public static void main(String[] args) {
+        File file = new File(args[0]);
         TreeNode<File> DirTree = createDirTree(file);
         String result = renderDirectoryTree(DirTree);
         System.out.println(result);
