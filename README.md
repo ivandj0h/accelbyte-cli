@@ -27,20 +27,20 @@ There are several Command that you can use when you run `AccelByte CLI` and here
 - **View Source Directory (current position)**
   to view the source directory, you can use the command below :
 ``
-**java -jar AccelByte-cli.jar --show-tree <write_whatever_folder_name_here>**
+**java -jar accelbytescli.jar --show-tree <write_whatever_folder_name_here>**
 ``
 
 here is the example if you are in the source folder
 
 ```
-java -jar accelbyte-cli.jar --show-tree SOURCE_FOLDER_1
+java -jar accelbytescli.jar --show-tree SOURCE_FOLDER_1
 
 ```
 
 or if you are in the parent directory of the source folder, you can use the command below :
 
 ```
-java -jar accelbyte-cli.jar --show-tree .\SOURCE_PARENT_FOLDER\SOURCE_FOLDER_1
+java -jar accelbytescli.jar --show-tree .\SOURCE_PARENT_FOLDER\SOURCE_FOLDER_1
 
 ```
 
@@ -50,12 +50,12 @@ java -jar accelbyte-cli.jar --show-tree .\SOURCE_PARENT_FOLDER\SOURCE_FOLDER_1
   to view both source directory and destination directory, you can use the command below :
 
 ``
-**java -jar AccelByte-cli.jar --show-tree <pointing_to_parent_directory>**
+**java -jar accelbytescli.jar --show-tree <pointing_to_parent_directory>**
 ``
 
 
 ```
-java -jar accelbyte-cli.jar --show-tree SOURCE_PARENT_DIRECTORY
+java -jar accelbytescli.jar --show-tree SOURCE_PARENT_DIRECTORY
 ```
 
 ![Show Directory](assets/show_parent_dir.png)
@@ -64,17 +64,17 @@ java -jar accelbyte-cli.jar --show-tree SOURCE_PARENT_DIRECTORY
 - **Run the sync command**
 
   to run the sync command, you can use the command below :
-  **java -jar AccelByte-cli.jar sync -s <source_folder_name> -d <destination_folder_name>**
+  **java -jar accelbytescli.jar sync -s <source_folder_name> -d <destination_folder_name>**
   here is the example :
 
 ```
-java -jar accelbyte-cli.jar sync -s SOURCE_FOLDER_1 -d DESTINATION_FOLDER_2
+java -jar accelbytescli.jar sync -s SOURCE_FOLDER_1 -d DESTINATION_FOLDER_2
 ```
 
 or if you are in the parent directory of the source folder, you can use the command below :
 
 ```
-java -jar accelbyte-cli.jar sync -s .\SOURCE_PARENT_FOLDER\SOURCE_FOLDER_1 -d .\DESTINATION_PARENT_FOLDER\DESTINATION_FOLDER_2
+java -jar accelbytescli.jar sync -s .\SOURCE_PARENT_FOLDER\SOURCE_FOLDER_1 -d .\DESTINATION_PARENT_FOLDER\DESTINATION_FOLDER_2
 
 ```
 
