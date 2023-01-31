@@ -13,7 +13,8 @@ This simple tool that can be used to :
 
 ### AccelByte CLI jar file
 
-This Application will be produce a `Jar Execute file` so you can run it through Command Prompt or cmd and To run AccelByte CLI, what you have to does are:
+This Application will be produce a `Jar Execute file` so you can run it through Command Prompt or cmd and To run
+AccelByte CLI, what you have to does are:
 
 - Read the documentation carefully and follow the steps
 - Make sure you have minimum java 11 or above installed on your machine
@@ -23,14 +24,15 @@ This Application will be produce a `Jar Execute file` so you can run it through 
 
 There are several Command that you can use when you run `AccelByte CLI` and here they are :
 
-
-1. **To view Source Directory**
-to view the source directory, you can use the command below :
+- **To view Source Directory**
+  to view the source directory, you can use the command below :
 
 **java -jar AccelByte-cli.jar --show-tree <write_whatever_folder_name_here>**
 here is the example :
+
 ```
 java -jar accelbyte-cli.jar --show-tree resources
 ```
 
+![Show Directory](assets/show_dir.png)
 
