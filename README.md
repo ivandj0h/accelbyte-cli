@@ -26,8 +26,10 @@ There are several Command that you can use when you run `AccelByte CLI` and here
 
 - **View Source Directory (current position)**
   to view the source directory, you can use the command below :
-
+``
 **java -jar AccelByte-cli.jar --show-tree <write_whatever_folder_name_here>**
+``
+
 here is the example if you are in the source folder
 
 ```
@@ -47,7 +49,10 @@ java -jar accelbyte-cli.jar --show-tree .\SOURCE_PARENT_FOLDER\SOURCE_FOLDER_1
 - **View both Source Directory & Destination Directory (Preview from parent directory in Tree Mode)**
   to view both source directory and destination directory, you can use the command below :
 
+``
 **java -jar AccelByte-cli.jar --show-tree <pointing_to_parent_directory>**
+``
+
 
 ```
 java -jar accelbyte-cli.jar --show-tree SOURCE_PARENT_DIRECTORY
@@ -73,4 +78,4 @@ java -jar accelbyte-cli.jar sync -s .\SOURCE_PARENT_FOLDER\SOURCE_FOLDER_1 -d .\
 
 ```
 
-![Show Directory](assets/sync_dir.png)
+![Sync](assets/sync_dir.png)
