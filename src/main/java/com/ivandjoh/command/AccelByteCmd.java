@@ -17,7 +17,7 @@ public class AccelByteCmd implements Callable<String> {
     @CommandLine.Option(names = "--show-tree", description = "show files inside folder")
     private String showFiles;
 
-    @CommandLine.Option(names = "sync", description = "Sync files from source to destination folder")
+    @CommandLine.Option(names = "sync", description = "Sync files from  to destination folder")
     private boolean isSync;
 
     @CommandLine.Option(names = "-s", description = "Source folder")
@@ -31,12 +31,11 @@ public class AccelByteCmd implements Callable<String> {
         if (showFiles != null) {
            TreeNode.main(new String[] {showFiles});
        }
-
-        if(!isSync && sourceFolder == null || destinationFolder == null) {
+        else if(!isSync || sourceFolder == null || destinationFolder == null) {
             System.out.println("Source and destination folder must be specified");
-            System.exit(1);
+            System.exit(0);
         } else {
-            System.out.println("Sync files from source to destination folder");
+            System.out.println("Sync files from " + sourceFolder  + " to " + destinationFolder  + " folder Success!");
         }
 
         return "Success";

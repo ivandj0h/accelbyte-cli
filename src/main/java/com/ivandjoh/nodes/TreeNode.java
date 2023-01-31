@@ -161,16 +161,7 @@ public class TreeNode<T> implements Iterable<TreeNode<T>> {
         TreeNode<File> DirTree = createDirTree(file);
         String result = renderDirectoryTree(DirTree);
         System.out.println(result);
-        try {
-            File newTextFile = new File("./DirectoryTree.txt");
-
-            FileWriter fw = new FileWriter(newTextFile);
-            fw.write(result);
-            fw.close();
-
-        } catch (IOException iox) {
-            iox.printStackTrace();
-        }
+        System.out.println("Thanks for using our program! Have a nice day!");
 
     }
 }
