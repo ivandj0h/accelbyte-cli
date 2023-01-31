@@ -9,7 +9,7 @@ This is a simple tool that can be used to :
 - copy files from/to a namespace
 
 ### AccelByte CLI jar file
-To run AccelByte CLI, what you have to do are: 
+To run AccelByte CLI, what you have to does are: 
 - make sure you have minimum java 11 or above installed on your machine
 - find the AccelByte CLI jar file in the production folder
 
@@ -17,6 +17,7 @@ To run AccelByte CLI, what you have to do are:
 to run the jar file using the command below :
 
 **To view Source Directory**
+
 to view the source directory, you can use the command below :
 
 ```bash
