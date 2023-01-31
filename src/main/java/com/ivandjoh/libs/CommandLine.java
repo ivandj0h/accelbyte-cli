@@ -1,18 +1,4 @@
-/*
-Copyright 2017 Remko Popma
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package picocli;
 
 import java.io.*;
@@ -52,99 +38,6 @@ import static picocli.CommandLine.Help.Column.Overflow.SPAN;
 import static picocli.CommandLine.Help.Column.Overflow.TRUNCATE;
 import static picocli.CommandLine.Help.Column.Overflow.WRAP;
 
-/**
- * <p>
- * CommandLine interpreter that uses reflection to initialize an annotated user object with values obtained from the
- * command line arguments.
- * </p><p>
- * The full user manual is hosted at <a href="https://picocli.info/">https://picocli.info</a>.
- * </p><h2>Example</h2>
- * <p id="checksum_example">
- * An example that implements {@code Callable} and uses the {@link #execute(String...) CommandLine.execute} convenience API to run in a single line of code:
- * </p>
- * <pre>
- * &#064;Command(name = "checksum", mixinStandardHelpOptions = true, version = "checksum 4.0",
- * description = "Prints the checksum (SHA-1 by default) of a file to STDOUT.")
- * class CheckSum implements Callable&lt;Integer&gt; {
- *
- * &#064;Parameters(index = "0", description = "The file whose checksum to calculate.")
- * private File file;
- *
- * &#064;Option(names = {"-a", "--algorithm"}, description = "MD5, SHA-1, SHA-256, ...")
- * private String algorithm = "SHA-1";
- *
- * &#064;Override
- * public Integer call() throws Exception { // your business logic goes here...
- * byte[] fileContents = Files.readAllBytes(file.toPath());
- * byte[] digest = MessageDigest.getInstance(algorithm).digest(fileContents);
- * System.out.printf("%0" + (digest.length*2) + "x%n", new BigInteger(1,digest));
- * return 0;
- * }
- *
- * // CheckSum implements Callable, so parsing, error handling and handling user
- * // requests for usage help or version help can be done with one line of code.
- * public static void main(String[] args) {
- * int exitCode = new CommandLine(new CheckSum()).execute(args);
- * System.exit(exitCode);
- * }
- * }
- * </pre>
- * <p>Another example where the application calls {@code parseArgs} and takes responsibility
- * for error handling and checking whether the user requested help:</p>
- * <pre>import static picocli.CommandLine.*;
- *
- * &#064;Command(mixinStandardHelpOptions = true, version = "v3.0.0",
- * header = "Encrypt FILE(s), or standard input, to standard output or to the output file.")
- * public class Encrypt {
- *
- * &#064;Parameters(description = "Any number of input files")
- * private List&lt;File&gt; files = new ArrayList&lt;File&gt;();
- *
- * &#064;Option(names = { "-o", "--out" }, description = "Output file (default: print to console)")
- * private File outputFile;
- *
- * &#064;Option(names = { "-v", "--verbose"}, description = "Verbose mode. Helpful for troubleshooting. Multiple -v options increase the verbosity.")
- * private boolean[] verbose;
- * }
- * </pre>
- * <p>
- * Use {@code CommandLine} to initialize a user object as follows:
- * </p><pre>
- * public static void main(String... args) {
- * Encrypt encrypt = new Encrypt();
- * try {
- * ParseResult parseResult = new CommandLine(encrypt).parseArgs(args);
- * if (!CommandLine.printHelpIfRequested(parseResult)) {
- * runProgram(encrypt);
- * }
- * } catch (ParameterException ex) { // command line arguments could not be parsed
- * System.err.println(ex.getMessage());
- * ex.getCommandLine().usage(System.err);
- * }
- * }
- * </pre><p>
- * Invoke the above program with some command line arguments. The below are all equivalent:
- * </p>
- * <pre>
- * --verbose --out=outfile in1 in2
- * --verbose --out outfile in1 in2
- * -v --out=outfile in1 in2
- * -v -o outfile in1 in2
- * -v -o=outfile in1 in2
- * -vo outfile in1 in2
- * -vo=outfile in1 in2
- * -v -ooutfile in1 in2
- * -vooutfile in1 in2
- * </pre>
- * <h2>Classes and Interfaces for Defining a CommandSpec Model</h2>
- * <p>
- * <img src="doc-files/class-diagram-definition.png" alt="Classes and Interfaces for Defining a CommandSpec Model">
- * </p>
- * <h2>Classes Related to Parsing Command Line Arguments</h2>
- * <p>
- * <img src="doc-files/class-diagram-parsing.png" alt="Classes Related to Parsing Command Line Arguments">
- * </p>
- */
 public class CommandLine {
 
     /**
@@ -176,56 +69,10 @@ public class CommandLine {
         }
     };
 
-    /**
-     * Constructs a new {@code CommandLine} interpreter with the specified object (which may be an annotated user object or a {@link CommandSpec CommandSpec}) and a default {@linkplain IFactory factory}.
-     * <p>The specified object may be a {@link CommandSpec CommandSpec} object, or it may be a {@code @Command}-annotated
-     * user object with {@code @Option} and {@code @Parameters}-annotated fields and methods, in which case picocli automatically
-     * constructs a {@code CommandSpec} from this user object.
-     * </p><p> If the specified command object is an interface {@code Class} with {@code @Option} and {@code @Parameters}-annotated methods,
-     * picocli creates a {@link java.lang.reflect.Proxy Proxy} whose methods return the matched command line values.
-     * If the specified command object is a concrete {@code Class}, picocli delegates to the default factory to get an instance.
-     * </p><p>
-     * If the specified object implements {@code Runnable} or {@code Callable}, or if it is a {@code Method} object,
-     * the command can be run as an application in a <a href="#checksum_example">single line of code</a> by using the
-     * {@link #execute(String...) execute} method to omit some boilerplate code for handling help requests and invalid input.
-     * See {@link #getCommandMethods(Class, String) getCommandMethods} for a convenient way to obtain a command {@code Method}.
-     * </p><p>
-     * When the {@link #parseArgs(String...)} method is called, the {@link CommandSpec CommandSpec} object will be
-     * initialized based on command line arguments. If the commandSpec is created from an annotated user object, this
-     * user object will be initialized based on the command line arguments.
-     * </p>
-     *
-     * @param command an annotated user object or a {@code CommandSpec} object to initialize from the command line arguments
-     * @throws InitializationException if the specified command object does not have a {@link Command}, {@link Option} or {@link Parameters} annotation
-     */
     public CommandLine(Object command) {
         this(command, new DefaultFactory());
     }
 
-    /**
-     * Constructs a new {@code CommandLine} interpreter with the specified object (which may be an annotated user object or a {@link CommandSpec CommandSpec}) and object factory.
-     * <p>The specified object may be a {@link CommandSpec CommandSpec} object, or it may be a {@code @Command}-annotated
-     * user object with {@code @Option} and {@code @Parameters}-annotated fields and methods, in which case picocli automatically
-     * constructs a {@code CommandSpec} from this user object.
-     * </p><p> If the specified command object is an interface {@code Class} with {@code @Option} and {@code @Parameters}-annotated methods,
-     * picocli creates a {@link java.lang.reflect.Proxy Proxy} whose methods return the matched command line values.
-     * If the specified command object is a concrete {@code Class}, picocli delegates to the {@linkplain IFactory factory} to get an instance.
-     * </p><p>
-     * If the specified object implements {@code Runnable} or {@code Callable}, or if it is a {@code Method} object,
-     * the command can be run as an application in a <a href="#checksum_example">single line of code</a> by using the
-     * {@link #execute(String...) execute} method to omit some boilerplate code for handling help requests and invalid input.
-     * See {@link #getCommandMethods(Class, String) getCommandMethods} for a convenient way to obtain a command {@code Method}.
-     * </p><p>
-     * When the {@link #parseArgs(String...)} method is called, the {@link CommandSpec CommandSpec} object will be
-     * initialized based on command line arguments. If the commandSpec is created from an annotated user object, this
-     * user object will be initialized based on the command line arguments.
-     * </p>
-     *
-     * @param command an annotated user object or a {@code CommandSpec} object to initialize from the command line arguments
-     * @param factory the factory used to create instances of {@linkplain Command#subcommands() subcommands}, {@linkplain Option#converter() converters}, etc., that are registered declaratively with annotation attributes
-     * @throws InitializationException if the specified command object does not have a {@link Command}, {@link Option} or {@link Parameters} annotation
-     * @since 2.2
-     */
     public CommandLine(Object command, IFactory factory) {
         this(command, factory, true);
     }
@@ -271,40 +118,15 @@ public class CommandLine {
         return result;
     }
 
-    /**
-     * Returns the {@code CommandSpec} model that this {@code CommandLine} was constructed with.
-     *
-     * @return the {@code CommandSpec} model
-     * @since 3.0
-     */
     public CommandSpec getCommandSpec() {
         return commandSpec;
     }
 
-    /**
-     * Adds the options and positional parameters in the specified mixin to this command.
-     * <p>The specified object may be a {@link CommandSpec CommandSpec} object, or it may be a user object with
-     * {@code @Option} and {@code @Parameters}-annotated fields, in which case picocli automatically
-     * constructs a {@code CommandSpec} from this user object.
-     * </p>
-     *
-     * @param name  the name by which the mixin object may later be retrieved
-     * @param mixin an annotated user object or a {@link CommandSpec CommandSpec} object whose options and positional parameters to add to this command
-     * @return this CommandLine object, to allow method chaining
-     * @since 3.0
-     */
     public CommandLine addMixin(String name, Object mixin) {
         getCommandSpec().addMixin(name, CommandSpec.forAnnotatedObject(mixin, factory));
         return this;
     }
 
-    /**
-     * Returns a map of user objects whose options and positional parameters were added to ("mixed in" with) this command.
-     *
-     * @return a new Map containing the user objects mixed in with this command. If {@code CommandSpec} objects without
-     * user objects were programmatically added, use the {@link CommandSpec#mixins() underlying model} directly.
-     * @since 3.0
-     */
     public Map<String, Object> getMixins() {
         Map<String, CommandSpec> mixins = getCommandSpec().mixins();
         Map<String, Object> result = new LinkedHashMap<String, Object>();
@@ -314,92 +136,14 @@ public class CommandLine {
         return result;
     }
 
-    /**
-     * Registers a subcommand with the name obtained from the {@code @Command(name = "...")} {@linkplain Command#name() annotation attribute} of the specified command.
-     *
-     * @param command the object to initialize with command line arguments following the subcommand name.
-     *                This may be a {@code Class} that has a {@code @Command} annotation, or an instance of such a
-     *                class, or a {@code CommandSpec} or {@code CommandLine} instance with its own (nested) subcommands.
-     * @return this CommandLine object, to allow method chaining
-     * @throws InitializationException if no name could be found for the specified subcommand,
-     *                                 or if another subcommand was already registered under the same name, or if one of the aliases
-     *                                 of the specified subcommand was already used by another subcommand.
-     * @see #addSubcommand(String, Object)
-     * @since 4.0
-     */
     public CommandLine addSubcommand(Object command) {
         return addSubcommand(null, command, new String[0]);
     }
 
-    /**
-     * Registers a subcommand with the specified name. For example:
-     * <pre>
-     * CommandLine commandLine = new CommandLine(new Git())
-     * .addSubcommand("status", new GitStatus())
-     * .addSubcommand("commit", new GitCommit();
-     * .addSubcommand("add", new GitAdd())
-     * .addSubcommand("branch", new GitBranch())
-     * .addSubcommand("checkout", new GitCheckout())
-     * //...
-     * ;
-     * </pre>
-     *
-     * <p>The specified object can be an annotated object or a
-     * {@code CommandLine} instance with its own nested subcommands. For example:</p>
-     * <pre>
-     * CommandLine commandLine = new CommandLine(new MainCommand())
-     * .addSubcommand("cmd1", new ChildCommand1()) // subcommand
-     * .addSubcommand("cmd2", new ChildCommand2())
-     * .addSubcommand("cmd3", new CommandLine(new ChildCommand3()) // subcommand with nested sub-subcommands
-     * .addSubcommand("cmd3sub1", new GrandChild3Command1())
-     * .addSubcommand("cmd3sub2", new GrandChild3Command2())
-     * .addSubcommand("cmd3sub3", new CommandLine(new GrandChild3Command3()) // deeper nesting
-     * .addSubcommand("cmd3sub3sub1", new GreatGrandChild3Command3_1())
-     * .addSubcommand("cmd3sub3sub2", new GreatGrandChild3Command3_2())
-     * )
-     * );
-     * </pre>
-     * <p>The default type converters are available on all subcommands and nested sub-subcommands, but custom type
-     * converters are registered only with the subcommand hierarchy as it existed when the custom type was registered.
-     * To ensure a custom type converter is available to all subcommands, register the type converter last, after
-     * adding subcommands.</p>
-     * <p>See also the {@link Command#subcommands()} annotation to register subcommands declaratively.</p>
-     *
-     * @param name    the string to recognize on the command line as a subcommand.
-     *                If {@code null}, the {@linkplain CommandSpec#name() name} of the specified subcommand is used;
-     *                if this is also {@code null}, the first {@linkplain CommandSpec#aliases() alias} is used.
-     * @param command the object to initialize with command line arguments following the subcommand name.
-     *                This may be a {@code Class} that has a {@code @Command} annotation, or an instance of such a
-     *                class, or a {@code CommandSpec} or {@code CommandLine} instance with its own (nested) subcommands.
-     * @return this CommandLine object, to allow method chaining
-     * @throws InitializationException if the specified name is {@code null}, and no alternative name could be found,
-     *                                 or if another subcommand was already registered under the same name, or if one of the aliases
-     *                                 of the specified subcommand was already used by another subcommand.
-     * @see #registerConverter(Class, ITypeConverter)
-     * @see Command#subcommands()
-     * @since 0.9.7
-     */
     public CommandLine addSubcommand(String name, Object command) {
         return addSubcommand(name, command, new String[0]);
     }
 
-    /**
-     * Registers a subcommand with the specified name and all specified aliases. See also {@link #addSubcommand(String, Object)}.
-     *
-     * @param name    the string to recognize on the command line as a subcommand.
-     *                If {@code null}, the {@linkplain CommandSpec#name() name} of the specified subcommand is used;
-     *                if this is also {@code null}, the first {@linkplain CommandSpec#aliases() alias} is used.
-     * @param command the object to initialize with command line arguments following the subcommand name.
-     *                This may be a {@code Class} that has a {@code @Command} annotation, or an instance of such a
-     *                class, or a {@code CommandSpec} or {@code CommandLine} instance with its own (nested) subcommands.
-     * @param aliases zero or more alias names that are also recognized on the command line as this subcommand
-     * @return this CommandLine object, to allow method chaining
-     * @throws InitializationException if the specified name is {@code null}, and no alternative name could be found,
-     *                                 or if another subcommand was already registered under the same name, or if one of the aliases
-     *                                 of the specified subcommand was already used by another subcommand.
-     * @see #addSubcommand(String, Object)
-     * @since 3.1
-     */
     public CommandLine addSubcommand(String name, Object command, String... aliases) {
         CommandLine subcommandLine = toCommandLine(command, factory);
         subcommandLine.getCommandSpec().aliases.addAll(Arrays.asList(aliases));
@@ -407,12 +151,6 @@ public class CommandLine {
         return this;
     }
 
-    /**
-     * Returns a map with the subcommands {@linkplain #addSubcommand(String, Object) registered} on this instance.
-     *
-     * @return a map with the registered subcommands
-     * @since 0.9.7
-     */
     public Map<String, CommandLine> getSubcommands() {
         return new CaseAwareLinkedMap<String, CommandLine>(getCommandSpec().commands);
     }

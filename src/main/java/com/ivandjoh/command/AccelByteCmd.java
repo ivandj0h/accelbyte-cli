@@ -2,6 +2,7 @@ package com.ivandjoh.command;
 
 import java.util.concurrent.Callable;
 
+import com.ivandjoh.libs.CopyFile;
 import com.ivandjoh.nodes.TreeNode;
 import picocli.CommandLine;
 
@@ -35,7 +36,7 @@ public class AccelByteCmd implements Callable<String> {
             System.out.println("Source and destination folder must be specified");
             System.exit(0);
         } else {
-            System.out.println("Sync files from " + sourceFolder  + " to " + destinationFolder  + " folder Success!");
+            CopyFile.exeCopy(sourceFolder, destinationFolder);
         }
 
         return "Success";
