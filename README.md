@@ -81,4 +81,4 @@ java -jar accelbyte-cli.jar sync -s .\SOURCE_PARENT_FOLDER\SOURCE_FOLDER_1 -d .\
 ![Sync](assets/sync_dir.png)
 
 
-By [ivandjoh](https://linkedin.com/in/ivandjoh
+By [ivandjoh](https://linkedin.com/in/ivandjoh)
